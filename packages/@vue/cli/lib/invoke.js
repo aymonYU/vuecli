@@ -51,6 +51,7 @@ function getPkg (context) {
 }
 
 async function invoke (pluginName, options = {}, context = process.cwd()) {
+  console.log(222222222)
   delete options._
   const pkg = getPkg(context)
 
@@ -85,6 +86,7 @@ async function invoke (pluginName, options = {}, context = process.cwd()) {
   // contains a prompt module.
   if (!Object.keys(options).length) {
     let pluginPrompts = loadModule(`${id}/prompts`, context)
+    console.log(pluginPrompts,'pluginPrompts');
     if (pluginPrompts) {
       if (typeof pluginPrompts === 'function') {
         pluginPrompts = pluginPrompts(pkg)

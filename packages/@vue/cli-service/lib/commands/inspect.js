@@ -1,3 +1,4 @@
+const fs = require('fs')
 module.exports = (api, options) => {
   api.registerCommand('inspect', {
     description: 'inspect internal webpack config',
@@ -37,7 +38,11 @@ module.exports = (api, options) => {
     }
 
     const output = toString(res, { verbose })
+
     console.log(output)
+    fs.writeFile(process.cwd() + '/config.md', output, function () {
+      console.log('打印成功')
+    })
   })
 }
 

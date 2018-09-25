@@ -100,6 +100,7 @@ module.exports = class Generator {
     // apply generators from plugins
     plugins.forEach(({ id, apply, options }) => {
       const api = new GeneratorAPI(id, this, options, rootOptions)
+      console.log(11111111111111)
       apply(api, options, rootOptions, invoking)
     })
   }
@@ -109,6 +110,7 @@ module.exports = class Generator {
     checkExisting = false
   } = {}) {
     // save the file system before applying plugin for comparison
+    console.log(this.files,'dddddd');
     const initialFiles = Object.assign({}, this.files)
     // extract configs from package.json into dedicated files.
     this.extractConfigFiles(extractConfigFiles, checkExisting)

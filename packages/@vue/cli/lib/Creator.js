@@ -63,7 +63,7 @@ module.exports = class Creator extends EventEmitter {
   async create (cliOptions = {}, preset = null) {
     const isTestOrDebug = process.env.VUE_CLI_TEST || process.env.VUE_CLI_DEBUG
     const { run, name, context, createCompleteCbs } = this
-
+    console.log(cliOptions,'cliOptions');
     if (!preset) {
       if (cliOptions.preset) {
         // vue create foo --preset bar
@@ -93,13 +93,15 @@ module.exports = class Creator extends EventEmitter {
       bare: cliOptions.bare
     })
 
+    console.log(preset)
+
     const packageManager = (
       cliOptions.packageManager ||
       loadOptions().packageManager ||
       (hasYarn() ? 'yarn' : 'npm')
     )
 
-    await clearConsole()
+    // await clearConsole()
     logWithSpinner(`✨`, `Creating project in ${chalk.yellow(context)}.`)
     this.emit('creation', { event: 'creating' })
 
@@ -152,11 +154,13 @@ module.exports = class Creator extends EventEmitter {
     log(`🚀  Invoking generators...`)
     this.emit('creation', { event: 'invoking-generators' })
     const plugins = await this.resolvePlugins(preset.plugins)
+    // 生成文件列表
     const generator = new Generator(context, {
       pkg,
       plugins,
       completeCbs: createCompleteCbs
     })
+    // 生成文件
     await generator.generate({
       extractConfigFiles: preset.useConfigFiles
     })
@@ -166,6 +170,7 @@ module.exports = class Creator extends EventEmitter {
     this.emit('creation', { event: 'deps-install' })
     log()
     if (!isTestOrDebug) {
+      //安装所有npm文件
       await installDeps(context, packageManager, cliOptions.registry)
     }
 
@@ -231,9 +236,11 @@ module.exports = class Creator extends EventEmitter {
     // prompt
     if (!answers) {
       await clearConsole(true)
+      console.log(this.resolveFinalPrompts(),'this.resolveFinalPrompts()')
       answers = await inquirer.prompt(this.resolveFinalPrompts())
     }
     debug('vue-cli:answers')(answers)
+    console.log(answers,'answers')
 
     if (answers.packageManager) {
       saveOptions({
@@ -254,9 +261,11 @@ module.exports = class Creator extends EventEmitter {
       // run cb registered by prompt modules to finalize the preset
       this.promptCompleteCbs.forEach(cb => cb(answers, preset))
     }
+    console.log(this.promptCompleteCbs,"preset")
 
     // validate
     validatePreset(preset)
+    console.log(preset,"preset1")
 
     // save preset
     if (answers.save && answers.saveName) {
@@ -310,7 +319,9 @@ module.exports = class Creator extends EventEmitter {
   // { id: options } => [{ id, apply, options }]
   async resolvePlugins (rawPlugins) {
     // ensure cli-service is invoked first
+    console.log(rawPlugins,'rawPlugins')
     rawPlugins = sortObject(rawPlugins, ['@vue/cli-service'])
+    console.log(rawPlugins,'rawPlugins1')
     const plugins = []
     for (const id of Object.keys(rawPlugins)) {
       const apply = loadModule(`${id}/generator`, this.context) || (() => {})

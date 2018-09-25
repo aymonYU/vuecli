@@ -14,6 +14,8 @@ const isFunction = val => typeof val === 'function'
 const isObject = val => val && typeof val === 'object'
 const mergeArrayWithDedupe = (a, b) => Array.from(new Set([...a, ...b]))
 
+//各个文件api 生成的地方
+
 class GeneratorAPI {
   /**
    * @param {string} id - Id of the owner plugin

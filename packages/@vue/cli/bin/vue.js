@@ -2,7 +2,7 @@
 
 // Check node version before requiring/doing anything else
 // The user may be on a very old node version
-
+console.log(3333)
 const chalk = require('chalk')
 const semver = require('semver')
 const requiredVersion = require('../package.json').engines.node

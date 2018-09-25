@@ -1,4 +1,5 @@
 module.exports = (api, options) => {
+  console.log(2222222222)
   api.render('./template')
 
   api.extendPackage({

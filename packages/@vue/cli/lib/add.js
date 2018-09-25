@@ -34,6 +34,7 @@ async function add (pluginName, options = {}, context = process.cwd()) {
 
   const generatorPath = resolveModule(`${packageName}/generator`, context)
   if (generatorPath) {
+    console.log('***************invoke************************')
     invoke(pluginName, options, context)
   } else {
     log(`Plugin ${packageName} does not have a generator to invoke`)
