@@ -1,5 +1,4 @@
 var path = require('path')
-var fs = require('fs')
 var MpvuePlugin = require('webpack-mpvue-asset-plugin')
 var genEntry = require('../lib-changed/mpvue-entry')
 var utils = require('./utils')
@@ -10,6 +9,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 function resolve (dir) {
   return path.join(process.cwd(), dir)
 }
+/* changed*/
 function resolveCurPath (dir) {
   return path.resolve(__dirname, '..', dir)
 }
@@ -17,9 +17,11 @@ function resolveCurPath (dir) {
 module.exports = {
   entry: genEntry('./src/pages.js'),
   target: require('mpvue-webpack-target'),
+  /* changed*/
   resolveLoader: {
     modules: [path.resolve(__dirname, '../node_modules'), path.resolve(process.cwd(), 'node_modules')]
   },
+  /* changed*/
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].js'),
@@ -34,6 +36,7 @@ module.exports = {
       'vue': 'mpvue',
       '@': resolve('src')
     },
+    /* changed*/
     modules: [path.resolve(__dirname, '../node_modules'), path.resolve(process.cwd(), 'node_modules')],
     symlinks: false
   },
@@ -46,6 +49,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
+        /* changed*/
         include: [resolve('src'), resolve('test'), resolveCurPath('lib-changed/mpvue-entry')],
         use: [
           {
@@ -91,6 +95,7 @@ module.exports = {
   },
   plugins: [
     new MpvuePlugin(),
+    /* changed*/
     new CopyWebpackPlugin([
       {
         from: path.resolve(process.cwd(), 'static'),

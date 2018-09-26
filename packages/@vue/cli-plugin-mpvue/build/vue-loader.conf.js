@@ -6,6 +6,7 @@ var path = require('path')
 var isProduction = true
 
 module.exports = {
+  /* changed*/
   globalBabelrc: path.resolve(__dirname, '../.babelrc'),
   loaders: utils.cssLoaders({
     sourceMap: isProduction

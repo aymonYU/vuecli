@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // 项目内文件绝对路径获取函数
+/* changed */
 function resolveApp(dir) {
   // return path.join(path.dirname(require.main.filename), '..', dir);
   return path.resolve(process.cwd(), dir);

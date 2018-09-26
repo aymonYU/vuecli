@@ -1,9 +1,8 @@
+/* changed all*/
+
+process.env.NODE_ENV = 'development'
 
 var config = require('../config')
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
-}
-
 var path = require('path')
 var express = require('express')
 var webpack = require('webpack')
@@ -30,7 +29,6 @@ Object.keys(proxyTable).forEach(function (context) {
 app.use(require('connect-history-api-fallback')())
 
 app.use('/static', express.static(path.resolve(process.cwd(), 'dist')))
-console.log(port)
 
 app.listen(port, 'localhost')
 

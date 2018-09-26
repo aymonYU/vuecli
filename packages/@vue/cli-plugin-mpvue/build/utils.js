@@ -1,8 +1,8 @@
 var path = require('path')
-var config = require('../config')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 exports.assetsPath = function (_path) {
+  /* changed*/
   return path.posix.join('static', _path)
 }
 
@@ -21,6 +21,7 @@ exports.cssLoaders = function (options) {
     loader: 'postcss-loader',
     options: {
       config: {
+        /* changed*/
         path: path.resolve(__dirname, './.postcssrc.js')
       },
       sourceMap: true
