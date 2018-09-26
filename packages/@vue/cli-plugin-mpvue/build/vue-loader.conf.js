@@ -1,10 +1,12 @@
 var utils = require('./utils')
 var config = require('../config')
+var path = require('path')
 // var isProduction = process.env.NODE_ENV === 'production'
 // for mp
 var isProduction = true
 
 module.exports = {
+  globalBabelrc: path.resolve(__dirname, '../.babelrc'),
   loaders: utils.cssLoaders({
     sourceMap: isProduction
       ? config.build.productionSourceMap

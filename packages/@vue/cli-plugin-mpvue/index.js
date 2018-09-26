@@ -13,9 +13,10 @@ module.exports = (api, options) => {
     },
     args => {
       console.log(require.resolve('webpack'))
+      // process.env.NODE_ENV === 'development'
       exec(process.env.NODE_ENV === 'development' ? `node  ${path.resolve(__dirname, './build/dev-server.js')}` : `node  ${path.resolve(__dirname, './build/build.js')}`, (err, stdout, stderr) => {
         if (err) {
-          console.error(err)
+          console.error(err, 'ddd', stderr)
           return
         }
         console.log(stdout)

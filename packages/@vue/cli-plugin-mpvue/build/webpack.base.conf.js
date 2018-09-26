@@ -1,21 +1,29 @@
 var path = require('path')
 var fs = require('fs')
 var MpvuePlugin = require('webpack-mpvue-asset-plugin')
-var genEntry = require('mpvue-entry')
+var genEntry = require('../lib-changed/mpvue-entry')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
+var CopyWebpackPlugin = require('copy-webpack-plugin')
 
 function resolve (dir) {
-  return path.join(__dirname, '..', dir)
+  return path.join(process.cwd(), dir)
+}
+function resolveCurPath (dir) {
+  return path.resolve(__dirname, '..', dir)
 }
 
 module.exports = {
   entry: genEntry('./src/pages.js'),
   target: require('mpvue-webpack-target'),
+  resolveLoader: {
+    modules: [path.resolve(__dirname, '../node_modules'), path.resolve(process.cwd(), 'node_modules')]
+  },
   output: {
     path: config.build.assetsRoot,
-    filename: '[name].js',
+    filename: utils.assetsPath('js/[name].js'),
+    chunkFilename: utils.assetsPath('js/[id].js'),
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
@@ -26,19 +34,11 @@ module.exports = {
       'vue': 'mpvue',
       '@': resolve('src')
     },
+    modules: [path.resolve(__dirname, '../node_modules'), path.resolve(process.cwd(), 'node_modules')],
     symlinks: false
   },
   module: {
     rules: [
-      {
-        test: /\.(js|vue)$/,
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [resolve('src'), resolve('test')],
-        options: {
-          formatter: require('eslint-friendly-formatter')
-        }
-      },
       {
         test: /\.vue$/,
         loader: 'mpvue-loader',
@@ -46,9 +46,15 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        include: [resolve('src'), resolve('test'), resolve('node_modules/mpvue-entry')],
+        include: [resolve('src'), resolve('test'), resolveCurPath('lib-changed/mpvue-entry')],
         use: [
-          'babel-loader',
+          {
+            loader: 'babel-loader',
+            options: {
+              babelrc: true,
+              extends: path.resolve(__dirname, '../.babelrc')
+            }
+          },
           {
             loader: 'mpvue-loader',
             options: {
@@ -84,6 +90,13 @@ module.exports = {
     ]
   },
   plugins: [
-    new MpvuePlugin()
+    new MpvuePlugin(),
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(process.cwd(), 'static'),
+        to: path.resolve(process.cwd(), 'dist/static'),
+        ignore: ['.*']
+      }
+    ])
   ]
 }
