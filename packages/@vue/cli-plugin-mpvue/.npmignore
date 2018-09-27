@@ -1,6 +1,2 @@
 node_modules
-.DB_store
 .git
-.idea
-npm-debug.log
-mpvue-entry/dist/*.js

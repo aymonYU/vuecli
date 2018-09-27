@@ -5,7 +5,7 @@ var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
-var ExtractTextPlugin = utils.getExtractTextPlugin()
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var webpack = require('webpack')
 
@@ -21,7 +21,7 @@ module.exports = function (options) {
   const { entry } = options
   return {
     entry: genEntry('./src/pages.js', entry),
-    target: utils.getMpvueWebpackTarget(),
+    target: require('mpvue-webpack-target'),
     /* changed*/
     resolveLoader: {
       modules: [path.resolve(__dirname, '../node_modules'), path.resolve(process.cwd(), 'node_modules')]

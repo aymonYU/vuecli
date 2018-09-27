@@ -2,24 +2,18 @@
 vue-cli 3.0 对mpvue的支持
 
 ## 使用
-1.
 ```
 npm i -g vue-cli
 ```
-2.
 ```js
 git clone https://github.com/aymonYU/mpvue-demo-for-vue-cli.git
-
 ```
-3.
 ```js
 cd mpvue-demo-for-vue-cli && npm i
 ```
-4.
 ```js
 vue add vue-cli-plugin-mpvue
 ```
-5
 ```js
 npm run mpvue:dev
 ```
