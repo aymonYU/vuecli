@@ -1,13 +1,44 @@
-# 说明 
- 所有文件是从官方的demo的编译配置部分拷贝过来，稍作修改 
- 注：修改的地方全部用下面的标示注释
- ```
- /* changed*/
- ```
+## 功能
+vue-cli 3.0 对mpvue的支持
 
- 目录结构：
+## 使用
+1.
+```
+npm i -g vue-cli
+```
+2.
+```js
+git clone https://github.com/aymonYU/mpvue-demo-for-vue-cli.git
 
- - build 将源文件build目录 拷贝过来少稍做修改
- - config 将源文件config目录拷贝过来少稍做修改
- - lib-changed 存放更改的模块 (mpvue-entry模块中的文件目录结构调整，将源码的resolveApp稍作修改)
- - lib-temp  因为mpvue的一些编译包都是基于webpack3的，所以项目的webpack引向此目录
+```
+3.
+```js
+cd mpvue-demo-for-vue-cli && npm i
+```
+4.
+```js
+vue add vue-cli-plugin-mpvue
+```
+5
+```js
+npm run mpvue:dev
+```
+
+## 特性
+1. 支持在vue.config.js 中创建 entry 入口，以及alias 别名
+2. 支持命令行中传入入口,例如：
+```
+script:{
+    "mpvue:dev": "vue-cli-service mpvue './src/entry/mpvue.js'",
+    "mpvue:build": "vue-cli-service mpvue './src/entry/mpvue.js' --mode 'production'"
+}
+```
+3. mpvue 官方中的demo中存在`src/pages.js`，此项目允许不存在此文件
+则默认`src/pages.js`文件为pages文件夹下面的文件
+```
+[{
+    path:'pages/a.vue'
+}]
+```
+
+

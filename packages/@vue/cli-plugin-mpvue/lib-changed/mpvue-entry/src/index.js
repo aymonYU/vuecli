@@ -1,5 +1,17 @@
 const fs = require('fs');
 const path = require('path');
+const glob = require('glob');
+
+/* changed */
+/**
+ * 遍历整个 src/pages 目录，查找 .vue 文件,支持两层结构的目录
+ * @return {[type]}        [description]
+ */
+function getVuePages() {
+  const pagesPath = path.resolve(process.cwd(), 'src/pages');
+
+  return glob.sync(`${pagesPath}/**/*.vue`).map(item => ({ path: path.relative(path.resolve(process.cwd(), 'src'), item).replace('.vue', '') }));
+}
 
 // 项目内文件绝对路径获取函数
 /* changed */
@@ -52,7 +64,9 @@ function genEntry(...arg) {
   const bakTemplatePath = resolveModule('./dist/template.bak.js');
 
   // 获取所有新旧页面的配置
-  let pages = require(pagesPath);
+  /* changed */
+  // 如果没有pages.js的话，分析pages文件夹中文件
+  let pages = fs.existsSync(pagesPath) ? require(pagesPath) : getVuePages();
   let oldPages = fs.existsSync(bakPagesPath) ? require(bakPagesPath) : [];
   if (!Array.isArray(pages)) pages = [];
   if (!Array.isArray(oldPages)) oldPages = [];
@@ -107,15 +121,20 @@ function genEntry(...arg) {
   // 备份文件
   Promise.all(queue).then(() => {
     // 备份页面配置文件
-    const configReadStream = fs.createReadStream(pagesPath);
-    const configWriteStream = fs.createWriteStream(bakPagesPath);
-    configReadStream.pipe(configWriteStream);
+    if (fs.existsSync(pagesPath)) {
+      const configReadStream = fs.createReadStream(pagesPath);
+      const configWriteStream = fs.createWriteStream(bakPagesPath);
+
+      configReadStream.pipe(configWriteStream);
+    } else {
+      fs.writeFileSync(bakPagesPath, JSON.stringify(getVuePages()));
+    }
     // 备份入口模板文件
     writeFile(bakTemplatePath, template);
   });
 
   // 监听文件
-  fs.watch(pagesPath, { persistent: false }, () => genEntry(...arg));
+  if (fs.existsSync(pagesPath)) fs.watch(pagesPath, { persistent: false }, () => genEntry(...arg));
   fs.watch(templatePath, { persistent: false }, () => genEntry(...arg));
 
   return entry;

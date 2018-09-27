@@ -86,3 +86,11 @@ exports.styleLoaders = function (options) {
   }
   return output
 }
+
+exports.getExtractTextPlugin = function () {
+  return require('extract-text-webpack-plugin')
+}
+
+exports.getMpvueWebpackTarget = function () {
+  return require('mpvue-webpack-target')
+}
